@@ -1,0 +1,15 @@
+.DS_Store
+.vs
+CMakeFiles
+Thumbs.db
+*.cbp
+*.dll
+*.dylib
+*.exe
+*.filters
+*.sln
+*.so
+*.so.*
+*.suo
+*.vcxproj
+*.xcodeproj
