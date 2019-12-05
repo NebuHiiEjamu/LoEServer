@@ -35,12 +35,12 @@ public:
 	template <class StringType> StringType&& read(Size);
 	template <class T> T read(bool);
 	float read(bool, bool);
-	template <> std::string&& read();
+	std::string&& read();
 	void readNull(Size);
 	template <class T> void write(T, bool);
 	template <class StringType> void write(const StringType&);
 	template <> void write(const std::string&);
-	void write16(uint16); // for ambiguity
+	void write(float, bool, bool);
 	void writeNull(Size);
 private:
 	ByteString data;

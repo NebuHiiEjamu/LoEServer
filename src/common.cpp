@@ -90,7 +90,7 @@ template <class T> T ByteBuffer::read(bool reverseEndian = false)
 	return t;
 }
 
-template <> std::string&& ByteBuffer::read()
+std::string&& ByteBuffer::read()
 {
 	static std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
 	Byte byte2 = 0;
@@ -130,10 +130,20 @@ template <class T> void ByteBuffer::write(T t, bool reverseEndian = false)
 			data.push_back(static_cast<Byte>((t & (0xFF << (i * 8))) >> (i * 8)));
 }
 
-void ByteBuffer::write16(uint16 i)
+void ByteBuffer::write(float f, bool half = false, bool reverseEndian = false)
 {
-	data.push_back(static_cast<Byte>((i & 0xFF00) >> 8);
-	data.push_back(static_cast<Byte>(i & 0xFF);
+	if (half)
+	{
+		uint16 half = static_cast<uint16>((*reinterpret_cast<uint32*>(&f) & 0xFFFF0000) >> 16);
+		if (reverseEndian) write(half, true);
+		else write(half);
+	}
+	else
+	{
+		uint32 i = *reinterpret_cast<uint32*>(&f);
+		if (reverseEndian) write(i, true);
+		else write(i);
+	}
 }
 
 void ByteBuffer::writeNull(Size bytes)

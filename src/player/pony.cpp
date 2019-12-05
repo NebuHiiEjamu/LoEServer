@@ -49,3 +49,23 @@ void PonyData::setHornSize(float value)
 {
 	hornSize = std::min(std::max(value, 0.5f), 2.f);
 }
+
+void PonyData::toBuffer(ByteBuffer &buffer) const
+{
+	buffer.write(name);
+	buffer.write(race);
+	buffer.write(gender);
+	for (uint32 mark : cutieMarks) buffer.write(mark);
+	for (uint32 color : hairColors) buffer.write(color);
+	buffer.write(bodyColor);
+	buffer.write(eyeColor);
+	buffer.write(hoofColor);
+	buffer.write(mane);
+	buffer.write(tail);
+	buffer.write(eye);
+	buffer.write(hoof);
+	buffer.write(getBodySize());
+	buffer.write(getHornSize(), true);
+	buffer.write(static_cast<uint16>(getCombatLevel()));
+	buffer.write(nonPonyModel);
+}
