@@ -27,7 +27,7 @@ class ByteBuffer : std::enable_shared_from_this<ByteBuffer>
 public:
 	ByteBuffer();
 	ByteBuffer(ByteString&);
-	ByteBuffer&& clone(std::size_t) const;
+	ByteBuffer&& clone(Size) const;
 	ByteString& getBytes() const;
 	void setBytes(ByteString&);
 	Size getSize() const;
@@ -35,13 +35,12 @@ public:
 	template <class StringType> StringType&& read(Size);
 	template <class T> T read(bool);
 	float read(bool, bool);
-	template <> Timestamp&& read(bool);
-	template <> std::string&& read(bool);
+	template <> std::string&& read();
 	void readNull(Size);
 	template <class T> void write(T, bool);
-	template <> void write(const Timestamp&, bool);
-	template <> void write(const std::string&, bool);
-	void write32(uint32); // for ambiguity
+	template <class StringType> void write(const StringType&);
+	template <> void write(const std::string&);
+	void write16(uint16); // for ambiguity
 	void writeNull(Size);
 private:
 	ByteString data;

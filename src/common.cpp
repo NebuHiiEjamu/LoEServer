@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <boost/endian/conversion.hpp>
+#include <codecvt>
 #include <iterator>
+#include <locale>
 #include <utility>
 
 #include "common.hpp"
@@ -16,7 +18,7 @@ ByteBuffer::ByteBuffer(ByteString &inString):
 {
 }
 
-ByteBuffer&& ByteBuffer::clone(std::size_t bytes) const
+ByteBuffer&& ByteBuffer::clone(Size bytes) const
 {
 	ByteBuffer newBuffer;
 	newBuffer.data.insert(std::back_inserter(data), position, position + bytes);
@@ -28,7 +30,7 @@ ByteString& ByteBuffer::getBytes() const
 	return data;
 }
 
-std::size_t ByteBuffer::getSize() const
+Size ByteBuffer::getSize() const
 {
 	return data.size();
 }
@@ -43,7 +45,7 @@ void ByteBuffer::flush()
 	data.clear();
 }
 
-template <class StringType> StringType&& ByteBuffer::read(std::size_t bytes)
+template <class StringType> StringType&& ByteBuffer::read(Size bytes)
 {
 	StringType s(position, position + bytes);
 	position += bytes;
@@ -88,13 +90,33 @@ template <class T> T ByteBuffer::read(bool reverseEndian = false)
 	return t;
 }
 
-void ByteBuffer::readNull(std::size_t bytes)
+template <> std::string&& ByteBuffer::read()
+{
+	static std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
+	Byte byte2 = 0;
+	Byte byte1 = read();
+
+	if (byte1 >= 128) byte2 = read();
+	Size length = (byte1 % 128) + (byte2 * 128);
+	std::u16string original = read(length * 2);
+
+	return converter.to_bytes(original);
+}
+
+void ByteBuffer::readNull(Size bytes)
 {
 	position += bytes;
 }
 
 template <class StringType> void ByteBuffer::write(const StringType &s);
 {
+	data.insert(std::back_inserter(data), s.begin(), s.end());
+}
+
+template <> void ByteBuffer::write(const std::string &s)
+{
+	if (s.size() >= 128) write16(s.size());
+	else data.push_back(s.size());
 	data.insert(std::back_inserter(data), s.begin(), s.end());
 }
 
@@ -108,19 +130,13 @@ template <class T> void ByteBuffer::write(T t, bool reverseEndian = false)
 			data.push_back(static_cast<Byte>((t & (0xFF << (i * 8))) >> (i * 8)));
 }
 
-template <> void ByteBuffer::write(const Timestamp &time, bool reverseEndian = false)
+void ByteBuffer::write16(uint16 i)
 {
-}
-
-void ByteBuffer::write32(uint32 i)
-{
-	data.push_back(static_cast<Byte>((i & 0xFF000000) >> 24);
-	data.push_back(static_cast<Byte>((i & 0xFF0000) >> 16);
 	data.push_back(static_cast<Byte>((i & 0xFF00) >> 8);
 	data.push_back(static_cast<Byte>(i & 0xFF);
 }
 
-void ByteBuffer::writeNull(std::size_t bytes)
+void ByteBuffer::writeNull(Size bytes)
 {
 	for (std::size_t i = 0; i < bytes; i++) data.push_back(0);
 }
