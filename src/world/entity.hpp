@@ -4,7 +4,7 @@
 #include <Eigen/Dense>
 
 #include "forward.hpp"
-#include "../common.hpp"
+#include "../common/src/typedefs.hpp"
 
 struct Entity : public std::enable_shared_from_this<Entity>
 {

@@ -4,7 +4,7 @@
 #include <array>
 
 #include "forward.hpp"
-#include "../common.hpp"
+#include "../stream.hpp"
 
 enum class Race : Byte
 {
@@ -36,7 +36,7 @@ public:
 	uint32 getCombatLevel() const;
 	void setBodySize(float);
 	void setHornSize(float);
-	void toBuffer(ByteBuffer&) const;
+	void toStream(GameOutStream&) const;
 public:
 	std::string name;
 	std::string nonPonyModel;
@@ -61,19 +61,16 @@ private:
 	bool inUse;
 };
 
-std::ostream& operator<<(std::ostream&, const PonyData&);
-std::istream& operator>>(std::istream&, PonyData&);
-
 class Pony : public Entity
 {
 public:
-	static constexpr std::uint32_t maxInventorySize = 12;
-	static constexpr std::uint32_t maxWornItems = 32;
+	static constexpr uint32 maxInventorySize = 12;
+	static constexpr uint32 maxWornItems = 32;
 	Pony(PlayerRef);
 private:
 	PonyData data;
 	PlayerRef owner;
-	std::uint32_t bits;
+	uint32 bits;
 	float maxHealth;
 	float defense;
 	bool dead;

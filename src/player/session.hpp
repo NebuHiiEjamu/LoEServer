@@ -5,7 +5,7 @@
 #include <openssl/sha.h>
 
 #include "forward.hpp"
-#include "../common.hpp"
+#include "../common/src/typedefs.hpp"
 
 enum class InGameStatus : Byte
 {

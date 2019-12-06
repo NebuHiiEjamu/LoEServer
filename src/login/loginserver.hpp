@@ -1,13 +1,11 @@
 #ifndef _LOGINSERVER_H
 #define _LOGINSERVER_H
 
-#include <boost/asio.hpp>
 #include <map>
 #include <string>
 
+#include "../common/src/typedefs.hpp"
 #include "../player/forward.hpp"
-
-using boost::asio;
 
 class LoginServer
 {

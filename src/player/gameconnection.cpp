@@ -13,12 +13,12 @@ void GameConnection<T>::onConnect(std::string_view, uint16)
 }
 
 template <class T>
-void GameConnection<T>::onSend(const ByteString&)
+void GameConnection<T>::onSend(const Buffer&)
 {
 }
 
 template <class T>
-void GameConnection<T>::onReceive(const ByteString&)
+void GameConnection<T>::onReceive(const Buffer&)
 {
 }
 

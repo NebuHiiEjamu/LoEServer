@@ -1,7 +1,7 @@
 #ifndef _COMPONENTS_H
 #define _COMPONENTS_H
 
-#include "common.hpp"
+#include "common/src/typedefs.hpp"
 
 class StatsComponent
 {

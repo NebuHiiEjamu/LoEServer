@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "common/stream.hpp"
+#include "common/src/stream.hpp"
 
 class GameInStream : public InStream
 {

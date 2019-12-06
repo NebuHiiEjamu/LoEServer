@@ -1,9 +1,6 @@
 #include <algorithm>
 
 #include "pony.hpp"
-#include "../stream_helpers.hpp"
-
-using namespace boost::endian;
 
 PonyData::PonyData():
 	characterId(-1),
@@ -50,22 +47,22 @@ void PonyData::setHornSize(float value)
 	hornSize = std::min(std::max(value, 0.5f), 2.f);
 }
 
-void PonyData::toBuffer(ByteBuffer &buffer) const
+void PonyData::toStream(GameOutStream &stream) const
 {
-	buffer.write(name);
-	buffer.write(race);
-	buffer.write(gender);
-	for (uint32 mark : cutieMarks) buffer.write(mark);
-	for (uint32 color : hairColors) buffer.write(color);
-	buffer.write(bodyColor);
-	buffer.write(eyeColor);
-	buffer.write(hoofColor);
-	buffer.write(mane);
-	buffer.write(tail);
-	buffer.write(eye);
-	buffer.write(hoof);
-	buffer.write(getBodySize());
-	buffer.write(getHornSize(), true);
-	buffer.write(static_cast<uint16>(getCombatLevel()));
-	buffer.write(nonPonyModel);
+	stream.write(name);
+	stream.write(race);
+	stream.write(gender);
+	for (uint32 mark : cutieMarks) stream.write(mark);
+	for (uint32 color : hairColors) stream.write(color);
+	stream.write(bodyColor);
+	stream.write(eyeColor);
+	stream.write(hoofColor);
+	stream.write(mane);
+	stream.write(tail);
+	stream.write(eye);
+	stream.write(hoof);
+	stream.write(getBodySize());
+	stream.write(getHornSize(), true);
+	stream.write(static_cast<uint16>(getCombatLevel()));
+	stream.write(nonPonyModel);
 }

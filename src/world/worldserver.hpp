@@ -5,8 +5,7 @@
 
 #include "forward.hpp"
 #include "../player/forward.hpp"
-#include "../net/forward.hpp"
-#include "../common.hpp"
+#include "../common/src/typedefs.hpp"
 
 class WorldServer final : std::enable_shared_from_this<WorldServer>
 {
@@ -15,7 +14,7 @@ public:
 private:
 	WorldServer();
 private:
-	static std::shared_ptr<WorldServer> worldServer;
+	static std::shared_ptr<WorldServer> instance;
 	GameConnectionPtr<boost::asio::ip::udp> udpConnection;
 	GameConnectionPtr<boost::asio::ip::tcp> remote;
 };

@@ -3,7 +3,7 @@
 #include <locale>
 #include <utility>
 
-#include "common.hpp"
+#include "stream.hpp"
 
 float GameInStream::read(bool half = false, bool reverseEndian = false)
 {

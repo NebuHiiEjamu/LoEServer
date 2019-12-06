@@ -5,7 +5,7 @@
 #include <set>
 
 #include "forward.hpp"
-#include "../common.hpp"
+#include "../common/src/typedefs.hpp"
 
 class Vortex
 {
